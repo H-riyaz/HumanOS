@@ -1,8 +1,12 @@
 const express = require('express');
+const http = require('http');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { initDb } = require('./models');
 const apiRouter = require('./routes/api');
+const researchRouter = require('./routes/research');
+const dataRouter = require('./routes/data');
+const arenaController = require('./controllers/arena');
 
 const app = express();
 app.use(cors());
@@ -13,9 +17,18 @@ initDb().then(() => console.log('DB initialized')).catch(err => console.error(er
 
 // Mount API
 app.use('/api', apiRouter);
+app.use('/api/research', researchRouter);
+app.use('/api/data', dataRouter);
 
 // Health
 app.get('/health', (req, res) => res.json({ status: 'ok', ts: Date.now() }));
 
+const server = http.createServer(app);
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`HumanOS backend listening on ${PORT}`));
+
+// Attach socket.io
+const { Server } = require('socket.io');
+const io = new Server(server, { cors: { origin: '*' } });
+arenaController.init(io);
+
+server.listen(PORT, () => console.log(`HumanOS backend listening on ${PORT}`));

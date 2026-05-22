@@ -1,0 +1,36 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install backend deps
+        run: |
+          cd backend
+          npm ci
+      - name: Run backend lint/test (placeholder)
+        run: |
+          echo "No tests configured yet"
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install frontend deps
+        run: |
+          cd frontend
+          npm ci
+      - name: Build frontend (placeholder)
+        run: |
+          cd frontend
+          npm run build || true
