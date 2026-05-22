@@ -20,6 +20,17 @@ app.use('/api', apiRouter);
 app.use('/api/research', researchRouter);
 app.use('/api/data', dataRouter);
 
+// Serve frontend (production build) if available
+const path = require('path');
+const fs = require('fs');
+const frontendDist = path.join(__dirname, '..', '..', 'frontend', 'dist');
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
+
 // Health
 app.get('/health', (req, res) => res.json({ status: 'ok', ts: Date.now() }));
 

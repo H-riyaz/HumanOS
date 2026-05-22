@@ -8,10 +8,26 @@ Contents
 - frontend/: React + Vite + Tailwind UI starter with onboarding flow
 - docs/: architecture and next steps
 
-Next steps
-1) Choose database (PostgreSQL or MongoDB)
-2) Install dependencies: run npm install in backend and frontend
-3) Provide ML/hosting preferences for advanced emotion modules
+Running locally (development)
+1) Backend:
+   - cd backend
+   - npm install
+   - Set env vars: DATABASE_URL (e.g., postgres://user:pass@localhost:5432/humanos), JWT_SECRET
+   - npm run dev
+
+2) Frontend (dev server):
+   - cd frontend
+   - npm install
+   - npm run dev
+   - Open the Vite URL (usually http://localhost:5173)
+
+Running production (serve built frontend via backend)
+1) cd frontend && npm run build
+2) Start backend (it will serve frontend/dist automatically): cd backend && npm start
+
+Notes
+- Integration tests: backend npm run test:integration (uses in-memory sqlite)
+- For full functionality install Postgres and set DATABASE_URL appropriately
 
 Security & Ethics
 Includes consent, RBAC and privacy design notes in docs/architecture.md
